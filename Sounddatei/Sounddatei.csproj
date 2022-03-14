@@ -1,0 +1,93 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <PackageIcon>logo.ico</PackageIcon>
+    <UseWindowsForms>False</UseWindowsForms>
+    <StartupObject></StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Remove="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\add.ico" />
+    <None Remove="Resources\clear.ico" />
+    <None Remove="Resources\ListItem.xaml.null" />
+    <None Remove="Resources\logo.ico" />
+    <None Remove="Resources\next.ico" />
+    <None Remove="Resources\nosound.ico" />
+    <None Remove="Resources\pause.ico" />
+    <None Remove="Resources\play.ico" />
+    <None Remove="Resources\previous.ico" />
+    <None Remove="Resources\random.ico" />
+    <None Remove="Resources\sound.ico" />
+    <None Remove="Resources\stop.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <COMReference Include="{215d64d2-031c-33c7-96e3-61794cd1ee61}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>4</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bass.NetWrapper" Version="2.4.12.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="ListItem.xaml.null" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\add.ico" />
+    <Resource Include="Resources\clear.ico" />
+    <Resource Include="Resources\logo.ico" />
+    <Resource Include="Resources\next.ico" />
+    <Resource Include="Resources\nosound.ico" />
+    <Resource Include="Resources\pause.ico" />
+    <Resource Include="Resources\play.ico" />
+    <Resource Include="Resources\previous.ico" />
+    <Resource Include="Resources\random.ico" />
+    <Resource Include="Resources\sound.ico" />
+    <Resource Include="Resources\stop.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="bass.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Resources\file.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
