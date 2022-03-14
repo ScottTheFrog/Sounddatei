@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <PackageIcon>logo.ico</PackageIcon>
-    <UseWindowsForms>False</UseWindowsForms>
+    <UseWindowsForms>True</UseWindowsForms>
     <StartupObject></StartupObject>
   </PropertyGroup>
 

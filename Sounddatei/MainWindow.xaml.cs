@@ -25,10 +25,13 @@ namespace Sounddatei
         public List<string> pathList = new List<string> { "null"};
         public MainWindow()
         {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+ 
             this.DataContext = this;
             InitializeComponent();
             MusicList.AddHandler(MouseDoubleClickEvent, new MouseButtonEventHandler(OnMusicListMouseLeftButtonDown), true);
-            PopulateTreeView(@"D:\Music");
+            PopulateTreeView(dialog.SelectedPath);
             ConstantUpdate();
 
         }

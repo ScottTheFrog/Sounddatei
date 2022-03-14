@@ -1,4 +1,4 @@
-![sounddatei logo](/github/images/logo.png)
+![sounddatei logo](/github/images/logo.jpg)
 
 #Sounddatei
 
