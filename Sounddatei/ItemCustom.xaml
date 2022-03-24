@@ -12,11 +12,10 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Image Grid.Column="1"   Source="{Binding ImageBitMap}"/>
-            <TextBlock Grid.Column="2" Text="{Binding FileName}"/>
+            <Image Grid.Column="0"   Source="{Binding ImageBitMap}"/>
+            <TextBlock Grid.Column="1" Text="{Binding FileName}"/>
         </Grid>
     </TreeViewItem.Header>
 </TreeViewItem>

@@ -11,7 +11,7 @@ namespace Sounddatei
         //Path of File/Directory
         public string Path { get; set; } = "DefaultPath.txt";
         //icon of File/Directory
-        public BitmapImage ImageBitMap { get; set; }
+        public BitmapSource ImageBitMap { get; set; }
         //
         public bool isDirectory { get; set; }
         //List to hold the items inside Item if it is a Directory

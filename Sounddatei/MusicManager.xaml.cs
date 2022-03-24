@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using Un4seen.Bass;
+using Un4seen.Bass.AddOn.Enc;
+using System.Windows.Interop;
 
 namespace Sounddatei
 {
@@ -25,13 +27,13 @@ namespace Sounddatei
             _mySync = new SYNCPROC(onStreamEnded);
         }
 
-        public BitmapImage playIco = new BitmapImage(new Uri(Path.GetFullPath(@"..\..\..\Resources\play.ico")));
-        public BitmapImage pauseIco = new BitmapImage(new Uri(Path.GetFullPath(@"..\..\..\Resources\pause.ico")));
-        public BitmapImage soundIco = new BitmapImage(new Uri(Path.GetFullPath(@"..\..\..\Resources\sound.ico")));
-        public BitmapImage nosoundIco = new BitmapImage(new Uri(Path.GetFullPath(@"..\..\..\Resources\nosound.ico")));
+        public BitmapSource pauseIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.pause.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        public BitmapSource playIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.play.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        public BitmapSource soundIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.sound.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        public BitmapSource nosoundIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.nosound.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
 
-        public ObservableCollection<string> fileQueue = new ObservableCollection<string>();
+        public List<string> fileQueue = new List<string>();
         public int fileQueuePosition = 0;
         public List<int> fileQueueListPosition = new List<int>() { 0 } ;
         public int mainStream;
@@ -96,6 +98,10 @@ namespace Sounddatei
                 Bass.BASS_ChannelSetSync(mainStream, BASSSync.BASS_SYNC_END, 0, _mySync, IntPtr.Zero);
                 Bass.BASS_ChannelPlay(mainStream, false);
                 Bass.BASS_ChannelSetAttribute(mainStream, Un4seen.Bass.BASSAttribute.BASS_ATTRIB_VOL, currentVolume);
+
+                //int encoder = BassEnc.BASS_Encode_Start(mainStream, "lame -r -x -s 44100 -b 128 -", Un4seen.Bass.AddOn.Enc.BASSEncode.BASS_ENCODE_NOHEAD, null, IntPtr.Zero);
+                //BassEnc.BASS_Encode_CastInit(encoder, "localhost:8000", "scott", BassEnc.BASS_ENCODE_TYPE_MP3, "Scott Stream", "localhost:8000", "genre", null, null, 128, true);
+
                 currentSongLenght = (float)Bass.BASS_ChannelGetLength(mainStream);
             }
         }
@@ -216,7 +222,6 @@ namespace Sounddatei
             fileQueueListPosition.Add(0);
             fileQueuePosition = 0;
         }
-
         public async void ConstantUpdate()
         {
             while (true)

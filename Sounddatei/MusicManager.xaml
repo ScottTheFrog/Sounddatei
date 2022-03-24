@@ -7,6 +7,11 @@
       xmlns:self="clr-namespace:Sounddatei"
       mc:Ignorable="d">
 
+    <Grid.Resources>
+        <self:Appearance x:Key="windowAppearance"/>
+
+    </Grid.Resources>
+    
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -19,7 +24,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Margin="10,0,0,0 " Grid.Column="0" FontSize="12" Name="currentTimeText" Text="00:00"/>
+        <TextBlock Margin="10,0,0,0 " Grid.Column="0" FontSize="12" Name="currentTimeText" Text="00:00" Foreground="{Binding Source={StaticResource windowAppearance}, Path=timeCodecFirst}"/>
             
         <Slider
                 Grid.Column="1"
@@ -47,33 +52,33 @@
             <Button Margin="10,0,0,0"  Grid.Column="0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="onPreviousButtonPressed">
                 <Image 
                         Stretch="Fill" 
-                        Source="Resources/previous.ico"/>
+                        Source="Resources/whiteicons/previous.ico"/>
             </Button>
 
             <Button Grid.Column="1" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="onResumeButtonPressed">
                 <Image 
                         x:Name="resumeButtonImage"
                         Stretch="Fill" 
-                        Source="pack://application:,,,/Resources/play.ico"/>
+                        Source="pack://application:,,,/Resources/whiteicons/play.ico"/>
             </Button>
 
             <Button Grid.Column="2" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="onNextButtonPressed">
                 <Image
                         Stretch="Fill" 
-                        Source="pack://application:,,,/Resources/next.ico"/>
+                        Source="pack://application:,,,/Resources/whiteicons/next.ico"/>
             </Button>
             <Button Name="randomButton" Grid.Column="3" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="onRandomButtonPressed">
                 <Image
                         
                         Stretch="Fill" 
-                        Source="pack://application:,,,/Resources/random.ico"/>
+                        Source="pack://application:,,,/Resources/whiteicons/random.ico"/>
              </Button>
 
         <Image Grid.Column="4" 
                    x:Name="VolumeSliderImage"
                    Margin="10,0,5,0"
                    Width="16" Height="16" Stretch="Fill" 
-                   Source="pack://application:,,,/Resources/sound.ico"/>
+                   Source="pack://application:,,,/Resources/whiteicons/sound.ico"/>
 
         <Slider
                     Grid.Column="5"
@@ -83,7 +88,7 @@
                     Orientation="Horizontal" HorizontalAlignment="Stretch" 
                     Value="0.5" Minimum="0" Maximum="1" 
                     TickPlacement="None" TickFrequency="0.05"/>
-        <TextBlock Grid.Column="6" FontSize="16" Padding="10,0,0,0"  Name="songName" Text="WELCOME TO SOUNDDATEI MUSIC PLAYER"/>
+        <TextBlock Grid.Column="6" FontSize="16" Padding="10,0,0,0"  Name="songName" Text="WELCOME TO SOUNDDATEI MUSIC PLAYER" Foreground="{Binding Source={StaticResource windowAppearance}, Path=fileNameText}"/>
 
         </Grid>
 

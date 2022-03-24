@@ -24,9 +24,8 @@
 
   <ItemGroup>
     <None Remove="Resources\add.ico" />
-    <None Remove="Resources\clear.ico" />
     <None Remove="Resources\ListItem.xaml.null" />
-    <None Remove="Resources\logo.ico" />
+    <None Remove="Resources\logo3.jpg" />
     <None Remove="Resources\next.ico" />
     <None Remove="Resources\nosound.ico" />
     <None Remove="Resources\pause.ico" />
@@ -35,6 +34,14 @@
     <None Remove="Resources\random.ico" />
     <None Remove="Resources\sound.ico" />
     <None Remove="Resources\stop.ico" />
+    <None Remove="Resources\whiteicons\clear.ico" />
+    <None Remove="Resources\whiteicons\next.ico" />
+    <None Remove="Resources\whiteicons\nosound.ico" />
+    <None Remove="Resources\whiteicons\pause.ico" />
+    <None Remove="Resources\whiteicons\play.ico" />
+    <None Remove="Resources\whiteicons\previous.ico" />
+    <None Remove="Resources\whiteicons\random.ico" />
+    <None Remove="Resources\whiteicons\sound.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,13 +58,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="ListItem.xaml.null" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Resources\add.ico" />
     <Resource Include="Resources\clear.ico" />
-    <Resource Include="Resources\logo.ico" />
+    <Resource Include="Resources\logo3.jpg" />
     <Resource Include="Resources\next.ico" />
     <Resource Include="Resources\nosound.ico" />
     <Resource Include="Resources\pause.ico" />
@@ -66,6 +69,14 @@
     <Resource Include="Resources\random.ico" />
     <Resource Include="Resources\sound.ico" />
     <Resource Include="Resources\stop.ico" />
+    <Resource Include="Resources\whiteicons\clear.ico" />
+    <Resource Include="Resources\whiteicons\next.ico" />
+    <Resource Include="Resources\whiteicons\nosound.ico" />
+    <Resource Include="Resources\whiteicons\pause.ico" />
+    <Resource Include="Resources\whiteicons\play.ico" />
+    <Resource Include="Resources\whiteicons\previous.ico" />
+    <Resource Include="Resources\whiteicons\random.ico" />
+    <Resource Include="Resources\whiteicons\sound.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -74,6 +85,18 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Update="ResourcesProgram.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourcesProgram.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="ResourcesProgram.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesProgram.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -84,7 +107,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Update="Resources\file.ico">
+    <None Update="Resources\soundfile.ico">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

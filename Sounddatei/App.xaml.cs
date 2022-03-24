@@ -6,9 +6,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Un4seen.Bass;
+using Sounddatei.Properties;
 
 namespace Sounddatei
 {
+
+    public partial class Appearance : System.Windows.Controls.Page
+    {
+
+        static public string mainBackground { get; set; } = "#1E1F26";
+        static public string subBackground { get; set; } = "#1E1F26";
+
+        static public string fileNameText { get; set; } = "#f5dcbc";
+        static public string timeCodecFirst { get; set; } = "#f5dcbc";
+        static public string timeCodecSecond { get; set; } = "#f5dcbc";
+
+        static public string timeSliderForeground { get; set; } = "";
+
+    }
     /// <summary>
     /// App
     /// </summary>
@@ -49,6 +64,9 @@ namespace Sounddatei
             int pluginAdx = Bass.BASS_PluginLoad(@"lib\bass_adx.dll");
             int pluginAc3 = Bass.BASS_PluginLoad(@"lib\bass_ac3.dll");
             int pluginAcc = Bass.BASS_PluginLoad(@"lib\bass_aac.dll");
+
+            int plugingBassenc = Bass.BASS_PluginLoad(@"lib\bassenc.dll");
+            int pluginBassencMP3 = Bass.BASS_PluginLoad(@"lib\bassenc_mp3.dll");
 
 
             Sounddatei.App app = new Sounddatei.App();

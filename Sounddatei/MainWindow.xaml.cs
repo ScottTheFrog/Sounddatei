@@ -14,24 +14,26 @@ using System.Threading.Tasks;
 using Un4seen.Bass;
 using System.Windows.Data;
 using System.Windows.Controls.Primitives;
+using System.Windows.Interop;
 
 namespace Sounddatei
 {
+
     public partial class MainWindow : Window
     {
+        public BitmapSource soundfileIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.soundfile.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        public BitmapSource videofileIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.videofile.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        public BitmapSource imagefileIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.imagefile.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        public BitmapSource folderIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.folder.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         static string[] imageExtensions = { ".APG", ".AVIF", ".GIF", ".JPEG", ".JPG" , ".PNG", ".SVG", ".WEBP" };
         static string[] videoExtensions = { ".WEBM", ".MKV", ".VOB", ".OGV", ".GIFV", ".AVI", ".MOV", ".QT", ".MP4", ".M4P", ".M4V", ".MPG", ".MPEG", ".M2V", ".3GP", ".3G2", ".FLV"};
         static string[] audioExtensions = { ".AAC", ".AAX", ".ACT", ".AA", ".AIFF", ".ALAC", ".AMR", ".APE", ".AU", ".AWB", ".M4A", ".M4B", ".M4P", ".MP3", ".MP2", ".MP1 ", ".MPC", ".OGG", ".OGA", ".MOGG", ".OPUS", ".WAV", ".WMA", ".WEBM", ".FLAC" };
         public List<string> pathList = new List<string> { "null"};
         public MainWindow()
         {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog();
-            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
- 
             this.DataContext = this;
             InitializeComponent();
             MusicList.AddHandler(MouseDoubleClickEvent, new MouseButtonEventHandler(OnMusicListMouseLeftButtonDown), true);
-            PopulateTreeView(dialog.SelectedPath);
             ConstantUpdate();
 
         }
@@ -50,10 +52,13 @@ namespace Sounddatei
         public ObservableCollection<ListItem> transferFileQueue { get; set; } = new ObservableCollection<ListItem>();
         public void AddItem(int itemindex)
         {
-            ListItem listfile = new ListItem(Path.GetFileName(mainMusicManager.fileQueue[itemindex]), mainMusicManager.fileQueue[itemindex]);
-            var currentfilelengthstream = Bass.BASS_StreamCreateFile(mainMusicManager.fileQueue[itemindex], 0L, 0L, BASSFlag.BASS_DEFAULT);
-            TimeSpan timeTotal = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(currentfilelengthstream, (long)Bass.BASS_ChannelGetLength(currentfilelengthstream)));
-            listfile.Length = timeTotal.ToString(@"hh\:mm\:ss");
+            //var currentfilelengthstream = Bass.BASS_StreamCreateFile(mainMusicManager.fileQueue[itemindex], 0L, 0L, BASSFlag.BASS_DEFAULT);
+            //TimeSpan timeTotal = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(currentfilelengthstream, (long)Bass.BASS_ChannelGetLength(currentfilelengthstream)));
+            //timeTotal.ToString(@"hh\:mm\:ss")
+            ListItem listfile = new ListItem(
+                itemindex+1,
+                Path.GetFileName(mainMusicManager.fileQueue[itemindex]), 
+                mainMusicManager.fileQueue[itemindex]);
             transferFileQueue.Add(listfile);
 
         }
@@ -150,8 +155,7 @@ namespace Sounddatei
             foreach (string directory in directoryEntries)
             {
                 ItemCustom item = new ItemCustom();
-                BitmapImage directoryImageBitmap = new BitmapImage(new Uri(Path.GetFullPath(@"..\..\..\Resources\folder.ico")));
-                item.ImageBitMap = directoryImageBitmap;
+                item.ImageBitMap = folderIco;
                 item.Path = directory;
                 item.FileName = Path.GetFileName(directory);
                 item.isDirectory = true;
@@ -172,16 +176,18 @@ namespace Sounddatei
 
             }
         }
-        public void PopulateTreeView(string path)
+        public void PopulateTreeView(object sender, RoutedEventArgs e)
         {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+            string path = dialog.SelectedPath;
             pathList.Add(path);
             Style doubleclickstyle = this.FindResource("doubleclick") as Style;
             string[] directoryEntries = Directory.GetDirectories(path);
             foreach (string directory in directoryEntries)
             {
                 ItemCustom item = new ItemCustom();
-                BitmapImage directoryImageBitmap = new BitmapImage(new Uri(Path.GetFullPath(@"..\..\..\Resources\folder.ico")));
-                item.ImageBitMap = directoryImageBitmap;
+                item.ImageBitMap = folderIco;
                 item.Path = directory;
                 item.FileName = Path.GetFileName(directory);
                 item.isDirectory = true;
@@ -202,21 +208,21 @@ namespace Sounddatei
 
             }
         }
-        BitmapImage GetImageForFile(string path)
+        BitmapSource GetImageForFile(string path)
         {
             if (Array.IndexOf(imageExtensions, Path.GetExtension(path).ToUpperInvariant()) != -1)
             {
-                return new BitmapImage(new Uri(Path.GetFullPath(@"..\..\..\Resources\imagefile.ico")));
+                return imagefileIco;
             }
             if (Array.IndexOf(audioExtensions, Path.GetExtension(path).ToUpperInvariant()) != -1)
             {
-                return new BitmapImage(new Uri(Path.GetFullPath(@"..\..\..\Resources\file.ico")));
+                return soundfileIco;
             }
             if (Array.IndexOf(videoExtensions, Path.GetExtension(path).ToUpperInvariant()) != -1)
             {
-                return new BitmapImage(new Uri(Path.GetFullPath(@"..\..\..\Resources\videofile.ico")));
+                return videofileIco;
             }
-            return new BitmapImage(new Uri(Path.GetFullPath(@"..\..\..\Resources\file.ico")));
+            return soundfileIco;
 
         }
         bool IsAcceptableFileExtension(string path)
