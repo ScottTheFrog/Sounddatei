@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <None Remove="Resources\add.ico" />
+    <None Remove="Resources\app\froglogo.ico" />
     <None Remove="Resources\ListItem.xaml.null" />
     <None Remove="Resources\logo3.jpg" />
     <None Remove="Resources\next.ico" />
@@ -35,6 +36,7 @@
     <None Remove="Resources\sound.ico" />
     <None Remove="Resources\stop.ico" />
     <None Remove="Resources\whiteicons\clear.ico" />
+    <None Remove="Resources\whiteicons\loop.ico" />
     <None Remove="Resources\whiteicons\next.ico" />
     <None Remove="Resources\whiteicons\nosound.ico" />
     <None Remove="Resources\whiteicons\pause.ico" />
@@ -59,6 +61,7 @@
 
   <ItemGroup>
     <Resource Include="Resources\add.ico" />
+    <Resource Include="Resources\app\froglogo.ico" />
     <Resource Include="Resources\clear.ico" />
     <Resource Include="Resources\logo3.jpg" />
     <Resource Include="Resources\next.ico" />
@@ -70,6 +73,7 @@
     <Resource Include="Resources\sound.ico" />
     <Resource Include="Resources\stop.ico" />
     <Resource Include="Resources\whiteicons\clear.ico" />
+    <Resource Include="Resources\whiteicons\loop.ico" />
     <Resource Include="Resources\whiteicons\next.ico" />
     <Resource Include="Resources\whiteicons\nosound.ico" />
     <Resource Include="Resources\whiteicons\pause.ico" />

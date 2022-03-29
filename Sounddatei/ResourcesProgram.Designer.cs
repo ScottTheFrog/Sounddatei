@@ -63,6 +63,26 @@ namespace Sounddatei {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
+        internal static System.Drawing.Icon activatedloop {
+            get {
+                object obj = ResourceManager.GetObject("activatedloop", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon activatedshuffle {
+            get {
+                object obj = ResourceManager.GetObject("activatedshuffle", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
         internal static System.Drawing.Icon clear {
             get {
                 object obj = ResourceManager.GetObject("clear", resourceCulture);
@@ -86,6 +106,16 @@ namespace Sounddatei {
         internal static System.Drawing.Icon imagefile {
             get {
                 object obj = ResourceManager.GetObject("imagefile", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon loop {
+            get {
+                object obj = ResourceManager.GetObject("loop", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

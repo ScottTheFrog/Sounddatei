@@ -5,91 +5,141 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Sounddatei"
       xmlns:self="clr-namespace:Sounddatei"
-      mc:Ignorable="d">
+      mc:Ignorable="d"
+      MouseMove="gridMouseMove"
+      MouseUp="gridMouseUp"
+      MouseLeave="gridLostMouseCapture">
 
     <Grid.Resources>
         <self:Appearance x:Key="windowAppearance"/>
 
     </Grid.Resources>
-    
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
 
-        <Grid x:Name="playbuttonGrid"  Grid.Row="0" >
+    <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+    </Grid.RowDefinitions>
+
+    <Grid x:Name="playbuttonGrid"  Grid.Row="0" Margin="0,6,0,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
+            
         </Grid.ColumnDefinitions>
 
         <TextBlock Margin="10,0,0,0 " Grid.Column="0" FontSize="12" Name="currentTimeText" Text="00:00" Foreground="{Binding Source={StaticResource windowAppearance}, Path=timeCodecFirst}"/>
-            
-        <Slider
-                Grid.Column="1"
-                Name="TimeSlider"  
-                
-                Orientation="Horizontal" HorizontalAlignment="Stretch"
-                Value="1" Minimum="0" Maximum="1" 
-                TickPlacement="None" TickFrequency="0.005"/>
+
+        <ProgressBar 
+            MouseDown="SeekbarMouseDown"
+            Margin="7,0,20,0"
+            Grid.Column="1"
+            Name="Seekbar"
+            Height="8" 
+            Value="50"
+            HorizontalAlignment="Stretch">
+            <ProgressBar.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFFD3211" Offset="0"/>
+                </LinearGradientBrush>
+            </ProgressBar.Foreground>
+            <ProgressBar.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#66FFFFFF"/>
+                </LinearGradientBrush>
+            </ProgressBar.Background>
+        </ProgressBar>
 
 
     </Grid>
-        
-        <Grid x:Name="playbuttonGrid2" Grid.Row="1" >
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+
+    <Grid x:Name="playbuttonGrid2" Grid.Row="1" Margin="0,0,0,4" >
+
+        <Grid.Resources>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="Border" Value="#7FFFFFFF" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
 
-            <Button Margin="10,0,0,0"  Grid.Column="0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="onPreviousButtonPressed">
-                <Image 
+        <Button Margin="10,0,0,0"  Grid.Column="0" Width="24" Height="24" Click="onPreviousButtonPressed">
+            <Image 
                         Stretch="Fill" 
                         Source="Resources/whiteicons/previous.ico"/>
-            </Button>
+        </Button>
 
-            <Button Grid.Column="1" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="onResumeButtonPressed">
-                <Image 
+        <Button Grid.Column="1" Width="24" Height="24"  Click="onResumeButtonPressed">
+            <Image 
                         x:Name="resumeButtonImage"
                         Stretch="Fill" 
                         Source="pack://application:,,,/Resources/whiteicons/play.ico"/>
-            </Button>
+        </Button>
 
-            <Button Grid.Column="2" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="onNextButtonPressed">
-                <Image
+        <Button Grid.Column="2" Width="24" Height="24"  Click="onNextButtonPressed">
+            <Image
                         Stretch="Fill" 
                         Source="pack://application:,,,/Resources/whiteicons/next.ico"/>
-            </Button>
-            <Button Name="randomButton" Grid.Column="3" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="onRandomButtonPressed">
-                <Image
-                        
+        </Button>
+        <Button Grid.Column="3" Width="24" Height="24"  Click="onRandomButtonPressed">
+            <Image
+                        Name="randomButton"
                         Stretch="Fill" 
                         Source="pack://application:,,,/Resources/whiteicons/random.ico"/>
-             </Button>
+        </Button>
+        <Button  Grid.Column="4" Width="24" Height="24"  Click="onLoopButtonPressed">
+            <Image
+                        Name="loopButton"
+                        Stretch="Fill" 
+                        Source="pack://application:,,,/Resources/whiteicons/loop.ico"/>
+        </Button>
 
-        <Image Grid.Column="4" 
-                   x:Name="VolumeSliderImage"
-                   Margin="10,0,5,0"
-                   Width="16" Height="16" Stretch="Fill" 
-                   Source="pack://application:,,,/Resources/whiteicons/sound.ico"/>
+        <Button Grid.Column="5" 
+                x:Name="VolumeButton"
+                Margin="10,0,5,0"
+                Width="24" Height="24"
+                Click="onVolumeButtonPressed">
+            <Image 
+                    x:Name="VolumeButtonImage"
+                    Stretch="Fill" 
+                    Source="pack://application:,,,/Resources/whiteicons/sound.ico"/>
+        </Button>
 
         <Slider
-                    Grid.Column="5"
+                    Grid.Column="6"
                     Name="VolumeSlider"  
                     ValueChanged="MovingVolumeSlider"
                 
                     Orientation="Horizontal" HorizontalAlignment="Stretch" 
                     Value="0.5" Minimum="0" Maximum="1" 
                     TickPlacement="None" TickFrequency="0.05"/>
-        <TextBlock Grid.Column="6" FontSize="16" Padding="10,0,0,0"  Name="songName" Text="WELCOME TO SOUNDDATEI MUSIC PLAYER" Foreground="{Binding Source={StaticResource windowAppearance}, Path=fileNameText}"/>
 
-        </Grid>
+        <TextBlock Grid.Column="7" FontSize="16" Padding="10,0,0,0"  Name="songName" Text="WELCOME TO SOUNDDATEI MUSIC PLAYER" Foreground="{Binding Source={StaticResource windowAppearance}, Path=fileNameText}"/>
+
+    </Grid>
 
 </Grid>

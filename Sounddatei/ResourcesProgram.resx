@@ -118,6 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="activatedloop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\whiteicons\activatedloop.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="activatedshuffle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\whiteicons\activatedshuffle.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="clear" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\whiteicons\clear.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -126,6 +132,9 @@
   </data>
   <data name="imagefile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\imagefile.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="loop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\whiteicons\loop.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="next" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\whiteicons\next.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

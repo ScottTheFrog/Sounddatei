@@ -21,6 +21,7 @@ namespace Sounddatei
 
     public partial class MainWindow : Window
     {
+        public Window PreferencesWindow;
         public BitmapSource soundfileIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.soundfile.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         public BitmapSource videofileIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.videofile.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         public BitmapSource imagefileIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.imagefile.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
@@ -244,6 +245,23 @@ namespace Sounddatei
         {
             System.Windows.Application.Current.Shutdown();
         }
-
+        public void PreferencesWindowClicked(object sender, RoutedEventArgs e)
+        {
+            if (PreferencesWindow == null)
+            {
+                PreferencesWindowInstantiate();
+                return;
+            }
+            if (!PreferencesWindow.IsLoaded)
+            {
+                PreferencesWindowInstantiate();
+            }
+        }
+        private void PreferencesWindowInstantiate()
+        {
+            PreferencesWindow = new PreferencesWindow();
+            PreferencesWindow.Owner = this;
+            PreferencesWindow.Show();
+        }
     }
 }

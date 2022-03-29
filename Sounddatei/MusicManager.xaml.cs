@@ -21,8 +21,10 @@ namespace Sounddatei
         {
             InitializeComponent();
             this.DataContext = this;
-            TimeSlider.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseDownTimeSlider), true);
-            TimeSlider.AddHandler(MouseLeftButtonUpEvent, new MouseButtonEventHandler(MouseUpTimeSlider), true);
+            Seekbar.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(SeekbarMouseDown), true);
+            this.AddHandler(MouseLeftButtonUpEvent, new MouseButtonEventHandler(gridMouseUp), true);
+            this.AddHandler(MouseLeaveEvent, new MouseEventHandler(gridLostMouseCapture), true);
+            this.AddHandler(MouseMoveEvent, new MouseEventHandler(gridMouseMove), true);
             ConstantUpdate();
             _mySync = new SYNCPROC(onStreamEnded);
         }
@@ -32,14 +34,23 @@ namespace Sounddatei
         public BitmapSource soundIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.sound.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         public BitmapSource nosoundIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.nosound.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
+        public BitmapSource shuffleIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.random.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        public BitmapSource activatedshuffleIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.activatedshuffle.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        public BitmapSource loopIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.loop.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        public BitmapSource activatedloopIco = Imaging.CreateBitmapSourceFromHIcon(ResourcesProgram.activatedloop.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
 
         public List<string> fileQueue = new List<string>();
         public int fileQueuePosition = 0;
         public List<int> fileQueueListPosition = new List<int>() { 0 } ;
         public int mainStream;
+        TimeSpan timeTotal;
         public float currentVolume = 0.5f;
+        public float rememberedVolume = 0.5f;
+        public bool soundMuted = false;
 
         public bool autoPlaying = true;
+        public bool autoLoop = false;
         public bool randomSong = false;
 
         float currentSongLenght = 1f;
@@ -67,15 +78,19 @@ namespace Sounddatei
             {
                 resumeButtonImage.Source = playIco;
             });
-
-            if ( fileQueue.Count > 1)
+            if (fileQueue.Count >= 1)
             {
+                if (autoLoop)
+                {
+                    playStream(fileQueueListPosition[fileQueuePosition]);
+                    return;
+                }
                 ifRandom(1);
 
-                if (autoPlaying && fileQueuePosition <= (fileQueue.Count - 1))
+                if (autoPlaying && fileQueueListPosition[fileQueuePosition] <= (fileQueue.Count - 1) || randomSong)
                     playStream(fileQueueListPosition[fileQueuePosition]);
 
-            }
+             }
 
 
         }
@@ -98,6 +113,7 @@ namespace Sounddatei
                 Bass.BASS_ChannelSetSync(mainStream, BASSSync.BASS_SYNC_END, 0, _mySync, IntPtr.Zero);
                 Bass.BASS_ChannelPlay(mainStream, false);
                 Bass.BASS_ChannelSetAttribute(mainStream, Un4seen.Bass.BASSAttribute.BASS_ATTRIB_VOL, currentVolume);
+                timeTotal = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(mainStream, Bass.BASS_ChannelGetLength(mainStream)));
 
                 //int encoder = BassEnc.BASS_Encode_Start(mainStream, "lame -r -x -s 44100 -b 128 -", Un4seen.Bass.AddOn.Enc.BASSEncode.BASS_ENCODE_NOHEAD, null, IntPtr.Zero);
                 //BassEnc.BASS_Encode_CastInit(encoder, "localhost:8000", "scott", BassEnc.BASS_ENCODE_TYPE_MP3, "Scott Stream", "localhost:8000", "genre", null, null, 128, true);
@@ -107,27 +123,42 @@ namespace Sounddatei
         }
 
         public void MovingVolumeSlider(object sender, RoutedEventArgs e)
-        {
-            currentVolume = (float)VolumeSlider.Value;
-            Bass.BASS_ChannelSetAttribute(mainStream, Un4seen.Bass.BASSAttribute.BASS_ATTRIB_VOL, currentVolume);
-            if (currentVolume == 0)
-                VolumeSliderImage.Source = nosoundIco;
+        {   
+            if ((float)VolumeSlider.Value != 0)
+            {
+                rememberedVolume = (float)VolumeSlider.Value;
+                currentVolume = rememberedVolume;
+                soundMuted = false;
+                VolumeButtonImage.Source = soundIco;
+            }
             else
-                VolumeSliderImage.Source = soundIco;
+            {
+                soundMuted = true;
+                currentVolume = 0f;
+                VolumeButtonImage.Source = nosoundIco;
+            }
+            Bass.BASS_ChannelSetAttribute(mainStream, Un4seen.Bass.BASSAttribute.BASS_ATTRIB_VOL, currentVolume);
         }
-        public void MouseDownTimeSlider(object sender, RoutedEventArgs e)
+        private void onVolumeButtonPressed(object sender, RoutedEventArgs e)
         {
-            movingTimeSlider = true;
+            if (soundMuted)
+            {
+                soundMuted = false;
+                currentVolume = rememberedVolume;
+                VolumeButtonImage.Source = soundIco;
+            }
+            else
+            {
+                soundMuted = true;
+                currentVolume = 0f;
+                VolumeButtonImage.Source = nosoundIco;
+            }
         }
-        public void MouseUpTimeSlider(object sender, RoutedEventArgs e)
-        {
-            movingTimeSlider = false;
-        }
-
 
         public void onNextButtonPressed(object sender, RoutedEventArgs e)
         {
-            if (fileQueuePosition <= (fileQueue.Count - 2))
+            Debug.WriteLine(fileQueueListPosition[fileQueuePosition]);
+            if (fileQueueListPosition[fileQueuePosition] <= (fileQueue.Count - 2) || randomSong)
             {
                 ifRandom(1);
                 playStream(fileQueueListPosition[fileQueuePosition], true);
@@ -135,7 +166,7 @@ namespace Sounddatei
         }
         public void onPreviousButtonPressed(object sender, RoutedEventArgs e)
         {
-            if (fileQueuePosition > 0 && fileQueue.Count > 1)
+            if (fileQueueListPosition[fileQueuePosition] > 0 && fileQueue.Count > 1)
             {
                 ifRandom(-1);
 
@@ -168,13 +199,26 @@ namespace Sounddatei
         {
             if (randomSong)
             {
-                randomButton.BorderBrush = Brushes.Transparent;
+                randomButton.Source = shuffleIco;
                 randomSong = false;
             }
             else
             {
-                randomButton.BorderBrush = Brushes.Black;
+                randomButton.Source = activatedshuffleIco;
                 randomSong = true;
+            }
+        }
+        public void onLoopButtonPressed(object sender, RoutedEventArgs e)
+        {
+            if (autoLoop)
+            {
+                loopButton.Source = loopIco;
+                autoLoop = false;
+            }
+            else
+            {
+                loopButton.Source = activatedloopIco;
+                autoLoop = true;
             }
         }
         void ifRandom(int value)
@@ -200,6 +244,7 @@ namespace Sounddatei
                     else
                         fileQueueListPosition.Add(fileQueueListPosition[fileQueuePosition]+1);
                 }
+                randomHolder.Add(fileQueueListPosition[fileQueuePosition]);
             }
             else
             {
@@ -211,8 +256,38 @@ namespace Sounddatei
                         fileQueueListPosition.Add(fileQueueListPosition[fileQueuePosition]+1);
                 }
             }
-            randomHolder.Add(fileQueueListPosition[fileQueuePosition]);
             fileQueuePosition += value;
+        }
+        private void gridMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!movingTimeSlider)
+            {
+                return;
+            }
+            double MousePosition = Mouse.GetPosition(Seekbar).X;
+            this.Seekbar.Value = SetProgressBarValue(MousePosition);
+        }
+        private void SeekbarMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            movingTimeSlider = true;
+            Bass.BASS_ChannelSetAttribute(mainStream, Un4seen.Bass.BASSAttribute.BASS_ATTRIB_VOL, 0);
+        }
+        private void gridMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            movingTimeSlider = false;
+            Bass.BASS_ChannelSetAttribute(mainStream, Un4seen.Bass.BASSAttribute.BASS_ATTRIB_VOL, currentVolume);
+        }
+        private void gridLostMouseCapture(object sender, MouseEventArgs e )
+        {
+            movingTimeSlider = false;
+            Bass.BASS_ChannelSetAttribute(mainStream, Un4seen.Bass.BASSAttribute.BASS_ATTRIB_VOL, currentVolume);
+        }
+
+        private double SetProgressBarValue(double MousePosition)
+        {
+            double ratio = MousePosition / Seekbar.ActualWidth;
+            double ProgressBarValue = ratio * Seekbar.Maximum;
+            return ProgressBarValue;
         }
         public void ClearQueue()
         {
@@ -228,16 +303,17 @@ namespace Sounddatei
             {
                 if (!movingTimeSlider)
                 {
-                    float value = (float)Bass.BASS_ChannelGetPosition(mainStream) / currentSongLenght;
-                    TimeSlider.Value = value;
+
+                    double value = (double)Bass.BASS_ChannelGetPosition(mainStream) / currentSongLenght * 100;
+                    this.Seekbar.Value = value;
                 }
                 else
                 {
-                    float seconds = (float)TimeSlider.Value * currentSongLenght;
+                    float seconds = (float)Seekbar.Value / 100 * currentSongLenght;
                     Bass.BASS_ChannelSetPosition(mainStream, Bass.BASS_ChannelBytes2Seconds(mainStream, (long)seconds));
                 }
-                TimeSpan time = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(mainStream, (long)Bass.BASS_ChannelGetPosition(mainStream)));
-                TimeSpan timeTotal = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(mainStream, (long)Bass.BASS_ChannelGetLength(mainStream)));
+
+                TimeSpan time = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(mainStream, Bass.BASS_ChannelGetPosition(mainStream)));
                 this.Dispatcher.Invoke(() =>
                 {
                     currentTimeText.Text = time.ToString(@"hh\:mm\:ss") +" / " +  timeTotal.ToString(@"hh\:mm\:ss");

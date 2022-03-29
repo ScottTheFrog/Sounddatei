@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Sounddatei"
         xmlns:self="clr-namespace:Sounddatei"
         mc:Ignorable="d"
-        Icon="Resources/logo3.jpg"
+        Icon="/Resources/app/froglogo.ico"
         Title="Sounddatei" Height="450" Width="800">
 
     <Window.Resources>
@@ -21,9 +21,9 @@
     <DockPanel>
         <Popup Placement="Center" Name="aboutPopup" StaysOpen="False">
             <StackPanel Background="WhiteSmoke">
-                <Image Height="120" Width="120"  Source="/Resources/logo3.jpg" Margin="10"/>
+                <Image Height="120" Width="120"  Source="/Resources/app/froglogo.ico" Margin="10"/>
                 <TextBlock Text="About Sounddatei" FontSize="20" HorizontalAlignment="Center" Margin="5"/>
-                <TextBlock Text="version 0.1 " HorizontalAlignment="Center" Margin="5"/>
+                <TextBlock Text="version 0.1.5 " HorizontalAlignment="Center" Margin="5"/>
                 <TextBlock  Width="300" TextWrapping="Wrap" Text="Sounddatei is a tree-view audio player made by ScottTheFrog, the player is made with the WPF UI framework and Bass.NET by un4seen, it's use is of a regular audio player but with a tree-view on the left hand of the window to let the user add music to the queue."
                    HorizontalAlignment="Center" Margin="10"/>
             </StackPanel>
@@ -33,6 +33,11 @@
                 <Separator />
                 <MenuItem Header="_Folder" Click="PopulateTreeView"/>
                 <MenuItem Header="_Exit" Click="ExitApp" />
+            </MenuItem>
+
+            <MenuItem Header="_Edit">
+                <Separator/>
+                <MenuItem Header="_Preferences" Click="PreferencesWindowClicked"/>
             </MenuItem>
 
             <MenuItem Header="_Help">
